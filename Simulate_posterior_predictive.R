@@ -44,7 +44,7 @@ for (i in 1:10000) theta.mean[i] = rnorm(1, mean=m.dat, sample(theta.var, 1))
 
 mu.s = sample(theta.mean, size = 1000)
 var.s = sample(theta.var, size=1000)
-# create matrix for liklihood calculation
+# create matrix for likelihood calculation
 lik = matrix(NA, 1000, 1000)
 for (m in 1:1000){
   for (v in 1:1000){
@@ -54,15 +54,15 @@ for (m in 1:1000){
 rownames(lik) = round(mu.s)
 colnames(lik) = round(var.s)
 
-which(lik == max(lik), arr.ind = T)
+l = which(lik == max(lik), arr.ind = T)
 # use the col of matrix with the maximum liklihood for the variance to get the mean vector 
 # rejection sampling from prior mean
-post.mean = sample(mu.s, size = 10000, replace = T, prob = lik[,555])
-post.var = sample(var.s, size=10000, replace = T, prob= lik[857,])
+post.mean = sample(mu.s, size = 10000, replace = T, prob = lik[,l[1,'col']])
+post.var = sample(var.s, size=10000, replace = T, prob= lik[l[1,'row'],])
 
 # create new data points by sampling from the data
-x.new = rep(NA, 100)
-for (i in 1:100) {
+x.new = rep(NA, 10)
+for (i in 1:10) {
   s = NULL
   while(TRUE){ 
     s = rnorm(1, sample(post.mean, 1), sqrt(sample(post.var, size = 1)))
